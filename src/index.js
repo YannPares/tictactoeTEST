@@ -6,7 +6,6 @@ let board = ['', '', '', '', '', '', '', '','', '', '', '','', '', '', '']
 
 for (let i = 0; i < board.length; i++) {
     console.log(i)
-    
 }
 const clickedBoxTest = () => {
     let box = document.querySelector('.box')
