@@ -1,10 +1,16 @@
 // TO-DO: Implement game below
 
+let board = ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''];
+
+let currentPlayer = 1; 
+
+
 window.onload = () => {
     welcomeMessage()
     hiddeRestartBtn()
-    player1Active()
+    playerActive()
 }
+
 
 const welcomeMessage = () => {
     let status = document.querySelector('#status')
@@ -16,14 +22,25 @@ const hiddeRestartBtn = () => {
     return button.style.display = 'none'
 }
 
-const playerActive = (currentPlayer) => {
-    let player = document.querySelector(`#${currentPlayer}`)
-    player.classList.add('active')
-}
+const playerActive = () => {
+    
+    let player = document.querySelector(`#player${currentPlayer}`);
 
-let board = ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''];
+   
+    player.classList.remove('active');
+    player.classList.add('inactive');
 
-let currentPlayer = 1; 
+    
+    let otherPlayer = currentPlayer === 2 ? 1 : 2;
+
+    
+    let otherPlayerElement = document.querySelector(`#player${otherPlayer}`);
+
+    
+    otherPlayerElement.classList.remove('inactive');
+    otherPlayerElement.classList.add('active');
+};
+
 
 
 const winConditions = [
