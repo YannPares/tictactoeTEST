@@ -1,16 +1,5 @@
 // TO-DO: Implement game below
 
-// DIDN'T HAVE ANY TIME TO RESOLVE IT. TOO JUNIOR MAYBE. THANKS FOR THE OPORTUNITY. I'LL KEEP TRYING :)
-
-let board = ['', '', '', '', '', '', '', '','', '', '', '','', '', '', '']
-
-for (let i = 0; i < board.length; i++) {
-    console.log(i)
-}
-const clickedBoxTest = () => {
-    let box = document.querySelector('.box')
-}
-
 window.onload = () => {
     welcomeMessage()
     hiddeRestartBtn()
@@ -27,50 +16,78 @@ const hiddeRestartBtn = () => {
     return button.style.display = 'none'
 }
 
-const player1Active = () => {
-    let player = document.querySelector('#player1')
+const playerActive = (currentPlayer) => {
+    let player = document.querySelector(`#${currentPlayer}`)
     player.classList.add('active')
 }
 
-const player1Inactive = () => {
-    let player = document.querySelector('#player1')
-    player.classList.remove('active')
+let board = ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''];
+
+let currentPlayer = 1; 
+
+
+const winConditions = [
+ 
+  [0, 1, 2], [3, 4, 5], [6, 7, 8], 
+  [0, 3, 6], [1, 4, 7], [2, 5, 8], 
+  [0, 4, 8], [2, 4, 6]             
+];
+
+const squareWinConditions = [
+
+  [0, 1, 4, 5], [1, 2, 5, 6], [2, 3, 6, 7], 
+  [4, 5, 8, 9], [5, 6, 9, 10], [6, 7, 10, 11], 
+  [8, 9, 12, 13], [9, 10, 13, 14], [10, 11, 14, 15],
+  [1, 4, 8, 12], [2, 5, 9, 13], [3, 6, 10, 14], 
+  [0, 5, 10, 15], [3, 6, 9, 12] 
+];
+
+const tiles = document.getElementsByClassName('tile');
+
+for (let i = 0; i < tiles.length; i++) {
+  tiles[i].addEventListener('click', () => clickedTile(i));
 }
 
-const player2Active = () => {
-    let player = document.querySelector('#player2')
-    player.classList.add('active')
+function clickedTile(index) {
+  if (board[index] === '') {
+
+
+
+    if (tiles[index].classList.contains('marked')) {
+      board[index] = '';
+      tiles[index].innerHTML = '';
+      tiles[index].classList.remove('marked');
+    } else {
+
+      board[index] = currentPlayer === 1 ? 'X' : 'O';
+      tiles[index].innerHTML = board[index];
+      tiles[index].classList.add('marked');
+
+   
+      if (checkWinConditions(winConditions) || checkWinConditions(squareWinConditions)) {
+        announceWinner(currentPlayer);
+        return;
+      }
+
+
+      currentPlayer = currentPlayer === 1 ? 2 : 1;
+      playerActive(currentPlayer)
+    }
+  }
 }
 
-const player2Inactive = () => {
-    let player = document.querySelector('#player2')
-    player.classList.remove('active')
+function checkWinConditions(conditions) {
+  for (const condition of conditions) {
+    const [a, b, c, d] = condition;
+    if (board[a] !== '' && board[a] === board[b] && board[a] === board[c] && board[a] === board[d]) {
+      return true;
+    }
+  }
+  return false;
 }
 
-const clickedTileByPlayer1 = () => {
-    let tile = querySelectorAll('.tile')
-    tile.innerHTML = "X"
-    
-    player2Active()
-    player1Inactive()
+function announceWinner(player) {
+  let status = document.querySelector('#status');
+  status.innerHTML = `Player ${player} wins!`;
+
 }
-
-const clickedTileByPlayer2 = () => {
-    let tile = querySelectorAll('.tile')
-    tile.innerHTML = "O"
-
-    player1Active()
-    player2Inactive()
-}
-
-
-function getTiles(){
-    return document.getElementsByClassName('tile')
-}
-const tiles = getTiles()
-
-function getPlayers(){  
-    return document.getElementsByClassName('player')
-}
-const players = getPlayers()
-
